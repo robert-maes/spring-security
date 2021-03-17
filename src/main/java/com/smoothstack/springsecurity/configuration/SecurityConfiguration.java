@@ -1,5 +1,6 @@
 package com.smoothstack.springsecurity.configuration;
 
+import com.smoothstack.springsecurity.service.UserDetailServiceImpl;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -8,6 +9,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -20,11 +22,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @Autowired
-  DataSource dataSource;
+  UserDetailsService userDetailsService;
 
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    auth.jdbcAuthentication().dataSource(dataSource);
+    System.out.println("inside security config");
+    auth.userDetailsService(userDetailsService);
   }
 
   @Override
@@ -32,9 +35,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     http
       .authorizeRequests()
       .antMatchers("/admin")
-      .hasRole("ADMIN")
+      .hasAuthority("ADMIN")
       .antMatchers("/user")
-      .hasAnyRole("ADMIN", "USER")
+      .hasAnyAuthority("ADMIN", "USER")
       .antMatchers("/")
       .permitAll()
       .and()
