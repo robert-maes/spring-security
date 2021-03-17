@@ -24,10 +24,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
       .withUser("admin")
       .password(passwordEncoder().encode("adminpass"))
       .roles("ADMIN")
+      .authorities("ACCESS_PUBLIC", "ACCESS_PRIVATE")
       .and()
       .withUser("rob")
       .password(passwordEncoder().encode("testing1234"))
-      .roles("USER");
+      .roles("USER")
+      .authorities("ACCESS_PUBLIC");
   }
 
   @Override
@@ -37,9 +39,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
       .antMatchers("/api/global")
       .permitAll()
       .antMatchers("/api/public")
-      .authenticated()
+      .hasAuthority("ACCESS_PUBLIC")
       .antMatchers("/api/private")
-      .hasRole("ADMIN")
+      .hasAuthority("ACCESS_PRIVATE")
       .and()
       .httpBasic();
   }
