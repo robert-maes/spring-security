@@ -30,4 +30,14 @@ public class HelloController {
   public String priv() {
     return "Private";
   }
+
+  @RequestMapping(method = RequestMethod.GET, path = "/user")
+  public String user() {
+    return "User";
+  }
+
+  @RequestMapping(method = RequestMethod.GET, path = "/admin")
+  public String admin() {
+    return "Admin";
+  }
 }
