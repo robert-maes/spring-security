@@ -15,4 +15,19 @@ public class HelloController {
   public String helloWorld() {
     return "Hello World!";
   }
+
+  @RequestMapping(method = RequestMethod.GET, path = "/api/global")
+  public String global() {
+    return "Global";
+  }
+
+  @RequestMapping(method = RequestMethod.GET, path = "/api/public")
+  public String authenticated() {
+    return "Authenticated";
+  }
+
+  @RequestMapping(method = RequestMethod.GET, path = "/api/private")
+  public String priv() {
+    return "Private";
+  }
 }
